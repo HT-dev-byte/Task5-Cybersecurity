@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+
+{% block title %}Metrics Dashboard - PhishAware{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 1.5rem;">
+    <h2>Security Awareness & Interaction Metrics</h2>
+    <p style="color: var(--text-muted);">Real-time quantitative performance metrics generated from user simulation interactions.</p>
+</div>
+
+<div class="grid-4">
+    <div class="stat-card">
+        <span class="title">Total Messages</span>
+        <span class="value">{{ total_emails }}</span>
+    </div>
+    <div class="stat-card">
+        <span class="title">Total User Actions</span>
+        <span class="value">{{ total_actions }}</span>
+    </div>
+    <div class="stat-card">
+        <span class="title">Phishing Reporting Rate</span>
+        <span class="value" style="color: var(--success);">{{ reporting_rate }}%</span>
+    </div>
+    <div class="stat-card">
+        <span class="title">Link Interaction Rate</span>
+        <span class="value" style="color: var(--danger);">{{ interaction_rate }}%</span>
+    </div>
+</div>
+
+<div class="grid-2">
+    <!-- Chart 1: Actions Breakdown -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">📊 User Decision Breakdown</h3>
+        </div>
+        <div style="position: relative; height: 260px;">
+            <canvas id="actionsChart"></canvas>
+        </div>
+    </div>
+
+    <!-- Chart 2: User Awareness Scores -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">🎯 User Awareness Scores by Department</h3>
+        </div>
+        <div style="position: relative; height: 260px;">
+            <canvas id="userScoreChart"></canvas>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    // Actions Breakdown Chart
+    const ctx1 = document.getElementById('actionsChart').getContext('2d');
+    new Chart(ctx1, {
+        type: 'doughnut',
+        data: {
+            labels: ['Phishing Reports', 'Link Interactions', 'Form Submissions', 'Ignored Messages'],
+            datasets: [{
+                data: [{{ reports_count }}, {{ links_count }}, {{ forms_count }}, {{ ignore_count }}],
+                backgroundColor: ['#10b981', '#ef4444', '#f59e0b', '#64748b'],
+                borderWidth: 1,
+                borderColor: '#1e293b'
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: { color: '#f8fafc' }
+                }
+            }
+        }
+    });
+
+    // User Scores Chart
+    const ctx2 = document.getElementById('userScoreChart').getContext('2d');
+    const userNames = {{ user_names | tojson }};
+    const userScores = {{ user_scores | tojson }};
+
+    new Chart(ctx2, {
+        type: 'bar',
+        data: {
+            labels: userNames,
+            datasets: [{
+                label: 'Awareness Score (%)',
+                data: userScores,
+                backgroundColor: '#3b82f6',
+                borderRadius: 4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 100,
+                    ticks: { color: '#94a3b8' },
+                    grid: { color: '#334155' }
+                },
+                x: {
+                    ticks: { color: '#94a3b8' },
+                    grid: { color: '#334155' }
+                }
+            },
+            plugins: {
+                legend: { display: false }
+            }
+        }
+    });
+});
+</script>
+{% endblock %}

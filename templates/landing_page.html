@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}Simulated Landing Page - PhishAware{% endblock %}
+
+{% block content %}
+<div class="educational-callout">
+    <h4>⚠️ SIMULATED PHISHING LANDING PAGE (EDUCATIONAL USE ONLY)</h4>
+    <p>This is a safe, internal educational simulation page mimicking a corporate security verification screen. <strong>No passwords or sensitive credentials will ever be processed, transmitted, or stored.</strong></p>
+</div>
+
+<div style="max-width: 500px; margin: 2rem auto; background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 2rem; box-shadow: 0 4px 12px rgba(0,0,0,0.5);">
+    <div style="text-align: center; margin-bottom: 2rem;">
+        <div style="font-size: 2rem; font-weight: bold; color: var(--primary);">Northstar Account Security</div>
+        <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.5rem;">Corporate Single Sign-On Verification</p>
+    </div>
+
+    <form method="POST" action="{{ url_for('submit_landing_form') }}">
+        <input type="hidden" name="user_id" value="{{ current_user.id }}">
+        <input type="hidden" name="email_id" value="{{ email_id }}">
+
+        <div class="form-group">
+            <label for="dummy_email">User ID / Email</label>
+            <input type="text" id="dummy_email" class="form-control" value="{{ current_user.email }}" readonly>
+        </div>
+
+        <div class="form-group">
+            <label for="dummy_pass">Password (Explicit Dummy Field)</label>
+            <input type="password" id="dummy_pass" class="form-control" placeholder="••••••••" name="dummy_pass">
+            <small style="color: var(--text-muted); display: block; margin-top: 0.25rem; font-size: 0.75rem;">
+                ℹ️ Dummy field: Values entered here are discarded immediately.
+            </small>
+        </div>
+
+        <button type="submit" class="btn btn-danger" style="width: 100%; margin-top: 1rem; padding: 0.75rem;">
+            Verify Account Credentials
+        </button>
+    </form>
+</div>
+{% endblock %}

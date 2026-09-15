@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}Incident Timeline - PhishAware{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 1.5rem;">
+    <h2>Simulated Incident Timeline</h2>
+    <p style="color: var(--text-muted);">Visual progression of simulated threat activity, detection, and incident response containment.</p>
+</div>
+
+<div class="card">
+    <div style="position: relative; padding-left: 2rem; border-left: 3px solid var(--primary); margin: 1rem 0;">
+        {% for event in timeline_events %}
+        <div style="position: relative; margin-bottom: 2rem;">
+            <!-- Timeline dot -->
+            <div style="position: absolute; left: -2.6rem; top: 0.2rem; width: 1rem; height: 1rem; border-radius: 50%; background-color: {% if event.severity == 'HIGH' %}var(--danger){% elif event.severity == 'WARNING' %}var(--warning){% elif event.severity == 'LOW' %}var(--success){% else %}var(--primary){% endif %}; border: 3px solid var(--bg-dark);"></div>
+
+            <div style="background-color: var(--bg-dark); padding: 1rem 1.25rem; border-radius: 6px; border: 1px solid var(--border-color);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                    <span style="font-weight: bold; color: var(--text-main); font-size: 0.95rem;">
+                        {{ event.event_type }}
+                    </span>
+                    <span style="font-size: 0.8rem; color: var(--text-muted);"><code>{{ event.timestamp }}</code></span>
+                </div>
+                <p style="font-size: 0.875rem; color: var(--text-muted); margin-bottom: 0.5rem;">
+                    {{ event.details }}
+                </p>
+                <div style="font-size: 0.75rem; color: var(--info);">
+                    Actor: <code>{{ event.username }}</code> | Severity: <strong>{{ event.severity }}</strong>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <p style="color: var(--text-muted);">No incident timeline events recorded.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

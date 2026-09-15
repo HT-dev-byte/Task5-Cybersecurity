@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block title %}Security Findings - PhishAware{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 1.5rem;">
+    <h2>Security Findings & Analysis Catalog</h2>
+    <p style="color: var(--text-muted);">Key vulnerability observations and strategic defensive recommendations derived from phishing simulations.</p>
+</div>
+
+<!-- Finding 1 -->
+<div class="card" style="border-left: 5px solid var(--warning);">
+    <div class="card-header">
+        <div>
+            <span style="font-size: 1.1rem; font-weight: bold;">Finding 1 — User Susceptibility to Social Engineering</span>
+        </div>
+        <span class="badge badge-warning">MEDIUM SEVERITY</span>
+    </div>
+    <div style="font-size: 0.9rem; line-height: 1.6;">
+        <p style="margin-bottom: 0.75rem;">
+            <strong>Observation:</strong> The simulated phishing message utilized urgency and an unexpected account verification prompt to encourage immediate link interaction without verifying sender legitimacy.
+        </p>
+        <p style="margin-bottom: 0.75rem;">
+            <strong>Impact:</strong> Users who fail to recognize these social engineering tactics risk exposing credentials or initiating untrusted web requests, compromising corporate access.
+        </p>
+        <p>
+            <strong>Mitigation Recommendation:</strong> Conduct quarterly targeted phishing awareness drills focusing on urgent pretexting and email header scrutiny.
+        </p>
+    </div>
+</div>
+
+<!-- Finding 2 -->
+<div class="card" style="border-left: 5px solid var(--warning);">
+    <div class="card-header">
+        <div>
+            <span style="font-size: 1.1rem; font-weight: bold;">Finding 2 — Insufficient Phishing Indicator Recognition</span>
+        </div>
+        <span class="badge badge-warning">MEDIUM SEVERITY</span>
+    </div>
+    <div style="font-size: 0.9rem; line-height: 1.6;">
+        <p style="margin-bottom: 0.75rem;">
+            <strong>Observation:</strong> Test users interacted with link destinations prior to inspecting sender domain names (e.g., distinguishing <code>northstar.example</code> from valid subdomains).
+        </p>
+        <p style="margin-bottom: 0.75rem;">
+            <strong>Impact:</strong> Inability to spot deceptive domain spoofing increases susceptibility to drive-by credential harvesting pages.
+        </p>
+        <p>
+            <strong>Mitigation Recommendation:</strong> Provide interactive hover-over link training and deploy automated email client warning banners for external or unverified senders.
+        </p>
+    </div>
+</div>
+
+<!-- Finding 3 -->
+<div class="card" style="border-left: 5px solid var(--info);">
+    <div class="card-header">
+        <div>
+            <span style="font-size: 1.1rem; font-weight: bold;">Finding 3 — Incident Response Logging & SIEM Telemetry Gaps</span>
+        </div>
+        <span class="badge badge-info">LOW SEVERITY</span>
+    </div>
+    <div style="font-size: 0.9rem; line-height: 1.6;">
+        <p style="margin-bottom: 0.75rem;">
+            <strong>Observation:</strong> User link clicks were initially logged in isolated database tables without immediate real-time automated containment rules.
+        </p>
+        <p style="margin-bottom: 0.75rem;">
+            <strong>Impact:</strong> Delayed incident containment allows attacker infrastructure to remain active for longer windows.
+        </p>
+        <p>
+            <strong>Mitigation Recommendation:</strong> Export real-time security events to SIEM (JSON/CSV) and integrate SOAR playbooks to automatically disable flagged links.
+        </p>
+    </div>
+</div>
+{% endblock %}

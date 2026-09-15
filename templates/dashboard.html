@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - PhishAware{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 1.5rem;">
+    <h2>Security Awareness & SOC Command Center</h2>
+    <p style="color: var(--text-muted);">Overview of simulated phishing campaigns, user interactions, and incident response status.</p>
+</div>
+
+<!-- Metrics Cards -->
+<div class="grid-4">
+    <div class="stat-card">
+        <span class="title">Campaign Status</span>
+        <span class="value" style="color: var(--primary);">ACTIVE</span>
+    </div>
+    <div class="stat-card">
+        <span class="title">Test Users</span>
+        <span class="value">{{ total_users }}</span>
+    </div>
+    <div class="stat-card">
+        <span class="title">Simulated Messages</span>
+        <span class="value">{{ total_emails }}</span>
+    </div>
+    <div class="stat-card">
+        <span class="title">Link Interactions</span>
+        <span class="value" style="color: var(--warning);">{{ link_interactions }}</span>
+    </div>
+</div>
+
+<div class="grid-4">
+    <div class="stat-card">
+        <span class="title">Phishing Reports</span>
+        <span class="value" style="color: var(--success);">{{ phishing_reports }}</span>
+    </div>
+    <div class="stat-card">
+        <span class="title">Avg Awareness Score</span>
+        <span class="value">{{ avg_score }}%</span>
+    </div>
+    <div class="stat-card">
+        <span class="title">Incident Status</span>
+        <span class="value">
+            {% if incident.status == 'Recovered' or incident.status == 'RECOVERED' %}
+                <span class="badge badge-success">RECOVERED</span>
+            {% elif incident.status == 'Contained' or incident.status == 'CONTAINED' %}
+                <span class="badge badge-warning">CONTAINED</span>
+            {% elif incident.status == 'Eradicated' or incident.status == 'ERADICATED' %}
+                <span class="badge badge-info">ERADICATED</span>
+            {% else %}
+                <span class="badge badge-danger">DETECTED</span>
+            {% endif %}
+        </span>
+    </div>
+    <div class="stat-card">
+        <span class="title">Simulated Domain</span>
+        <span class="value" style="font-size: 1.1rem; color: var(--info);">northstar.example</span>
+    </div>
+</div>
+
+<div class="grid-2">
+    <!-- Active Incident Summary -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">🚨 Active Simulated Incident Summary</h3>
+            <a href="{{ url_for('incident_response') }}" class="btn btn-primary" style="font-size: 0.75rem;">Manage Incident</a>
+        </div>
+        <div>
+            <p style="margin-bottom: 0.5rem;"><strong>Incident Ref:</strong> {{ incident.incident_number }}</p>
+            <p style="margin-bottom: 0.5rem;"><strong>Type:</strong> {{ incident.incident_type }}</p>
+            <p style="margin-bottom: 0.5rem;"><strong>Severity:</strong> <span class="badge badge-warning">{{ incident.severity }}</span></p>
+            <p style="margin-bottom: 1rem;"><strong>Current Phase:</strong> <span class="badge badge-info">{{ incident.status }}</span></p>
+
+            <div style="background: var(--bg-dark); padding: 1rem; border-radius: 6px; font-size: 0.85rem;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.4rem;">
+                    <span>Campaign Disabled:</span>
+                    <span>{% if incident.campaign_disabled %}✅ YES{% else %}❌ NO{% endif %}</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.4rem;">
+                    <span>URL Blocked:</span>
+                    <span>{% if incident.url_blocked %}✅ YES{% else %}❌ NO{% endif %}</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.4rem;">
+                    <span>Artifacts Removed:</span>
+                    <span>{% if incident.artifacts_removed %}✅ YES{% else %}❌ NO{% endif %}</span>
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                    <span>Awareness Assigned:</span>
+                    <span>{% if incident.training_assigned %}✅ YES{% else %}❌ NO{% endif %}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Simulation Access -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">🧪 Phishing Awareness Quick Launch</h3>
+        </div>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">
+            Test organizational readiness by exploring simulated email messages, interacting with suspicious links, or reporting threats as a test user.
+        </p>
+        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+            <a href="{{ url_for('inbox') }}" class="btn btn-primary" style="text-align: center;">📥 Launch Simulated Inbox</a>
+            <a href="{{ url_for('events') }}" class="btn btn-secondary" style="text-align: center;">📜 View Simulated Security Logs</a>
+            <a href="{{ url_for('findings') }}" class="btn btn-secondary" style="text-align: center;">🔎 Security Findings & Recommendations</a>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Security Events Preview -->
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">Recent Simulated Security Events</h3>
+        <a href="{{ url_for('events') }}" style="color: var(--primary); font-size: 0.85rem; text-decoration: none;">View All Logs &rarr;</a>
+    </div>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Timestamp</th>
+                    <th>User</th>
+                    <th>Event Type</th>
+                    <th>Severity</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for event in recent_events %}
+                <tr>
+                    <td>{{ event.timestamp }}</td>
+                    <td><code>{{ event.username }}</code></td>
+                    <td><span class="badge badge-info">{{ event.event_type }}</span></td>
+                    <td>
+                        {% if event.severity == 'HIGH' %}
+                            <span class="badge badge-danger">HIGH</span>
+                        {% elif event.severity == 'WARNING' %}
+                            <span class="badge badge-warning">WARNING</span>
+                        {% else %}
+                            <span class="badge badge-info">{{ event.severity }}</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ event.details }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="5" style="text-align: center; color: var(--text-muted);">No events logged yet.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

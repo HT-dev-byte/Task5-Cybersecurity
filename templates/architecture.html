@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block title %}Architecture Diagram - PhishAware{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 1.5rem;">
+    <h2>Lab & Simulation System Architecture</h2>
+    <p style="color: var(--text-muted);">Detailed component flow for the self-contained security awareness and incident response simulator.</p>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">🧩 End-to-End Simulation Architecture Flow</h3>
+    </div>
+
+    <div style="background-color: var(--bg-dark); padding: 2rem; border-radius: 8px; font-family: monospace; font-size: 0.9rem; line-height: 1.5; color: #67e8f9; overflow-x: auto;">
+<pre>
+                        ┌─────────────────────────────────────────┐
+                        │             Simulated User              │
+                        │ (Alex Morgan, Jordan Lee, Taylor Smith) │
+                        └────────────────────┬────────────────────┘
+                                             │
+                                             ▼
+                        ┌─────────────────────────────────────────┐
+                        │           Mock Email Inbox              │
+                        │      (Northstar IT / HR / Payroll)      │
+                        └────────────────────┬────────────────────┘
+                                             │
+                                             ▼
+                        ┌─────────────────────────────────────────┐
+                        │        Phishing Scenario Engine         │
+                        │    (Decision: Report / Open / Ignore)   │
+                        └────────────────────┬────────────────────┘
+                                             │
+                                             ▼
+                        ┌─────────────────────────────────────────┐
+                        │          Security Event Logger          │
+                        │   (Telemetry: LINK_CLICK, REPORT, etc.) │
+                        └────────────────────┬────────────────────┘
+                                             │
+                       ┌─────────────────────┴─────────────────────┐
+                       ▼                                           ▼
+          ┌──────────────────────────┐               ┌──────────────────────────┐
+          │ Security Awareness Engine│               │ Incident Response Module │
+          │  - Score Calculation     │               │  - Phase 1: Detection    │
+          │  - Indicator Analysis    │               │  - Phase 2: Containment  │
+          │  - Defensive Guidance    │               │  - Phase 3: Eradication  │
+          └────────────┬─────────────┘               │  - Phase 4: Recovery     │
+                       │                             └────────────┬─────────────┘
+                       │                                          │
+                       └─────────────────────┬────────────────────┘
+                                             │
+                                             ▼
+                        ┌─────────────────────────────────────────┐
+                        │          SIEM Export & Reports          │
+                        │        (JSON / CSV / Findings)          │
+                        └─────────────────────────────────────────┘
+</pre>
+    </div>
+</div>
+
+<div class="grid-2">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">🔒 System Isolation & Safety Boundaries</h3>
+        </div>
+        <ul style="color: var(--text-muted); font-size: 0.875rem; line-height: 1.6; padding-left: 1.25rem;">
+            <li><strong>Zero External Traffic:</strong> No HTTP requests leave the application boundary. All domains (<code>northstar.example</code>) are internal mock routes.</li>
+            <li><strong>No Credential Ingestion:</strong> Form fields on the landing page are explicit dummy inputs that discard values immediately without logging or transmitting.</li>
+            <li><strong>Educational Purpose Only:</strong> Design strictly prevents reuse as a functional credential harvesting or campaign delivery tool.</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">⚙️ Core Architecture Components</h3>
+        </div>
+        <ul style="color: var(--text-muted); font-size: 0.875rem; line-height: 1.6; padding-left: 1.25rem;">
+            <li><strong>Flask Core Web Application:</strong> Lightweight Python routing server.</li>
+            <li><strong>SQLite Database Storage:</strong> In-memory / local persistent relational schema for users, emails, telemetry, and incident state.</li>
+            <li><strong>Telemetry & SIEM Exporter:</strong> Real-time structured event logging with CSV and JSON formatting.</li>
+        </ul>
+    </div>
+</div>
+{% endblock %}

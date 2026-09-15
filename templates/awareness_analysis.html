@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block title %}Security Awareness Analysis - PhishAware{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 1.5rem;">
+    <h2>Security Awareness & Defensive Analysis</h2>
+    <p style="color: var(--text-muted);">Educational feedback and risk evaluation based on your recent decision.</p>
+</div>
+
+<!-- Alert Banner based on decision -->
+{% if action == 'REPORT_PHISHING' %}
+    <div style="background-color: rgba(16, 185, 129, 0.15); border: 1px solid var(--success); color: var(--text-main); padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem;">
+        <h3 style="color: var(--success); margin-bottom: 0.5rem;">🎉 Excellent Defensive Action!</h3>
+        <p>You correctly identified and reported a suspicious phishing message. Your vigilance helps protect the organization against social engineering attacks.</p>
+    </div>
+{% elif action == 'OPEN_LINK' or action == 'FORM_SUBMIT' %}
+    <div style="background-color: rgba(239, 68, 68, 0.15); border: 1px solid var(--danger); color: var(--text-main); padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem;">
+        <h3 style="color: var(--danger); margin-bottom: 0.5rem;">⚠️ HIGH RISK INTERACTION DETECTED</h3>
+        <p>You interacted with a simulated phishing link or login form. In a real-world scenario, this interaction could lead to credential theft or malware infection.</p>
+        <p style="font-weight: bold; margin-top: 0.5rem; color: var(--warning);">🔒 Note: No actual credentials were harvested or saved. This is a 100% safe educational exercise.</p>
+    </div>
+{% else %}
+    <div style="background-color: rgba(6, 182, 212, 0.15); border: 1px solid var(--info); color: var(--text-main); padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem;">
+        <h3 style="color: var(--info); margin-bottom: 0.5rem;">ℹ️ Message Ignored</h3>
+        <p>Ignoring a suspicious email prevents immediate compromise, but reporting it to the Security Team (SOC) helps protect your colleagues by allowing IT to block the attack campaign organization-wide.</p>
+    </div>
+{% endif %}
+
+<div class="grid-2">
+    <!-- Phishing Indicators Analysis -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">🔍 Key Phishing Indicators in this Message</h3>
+        </div>
+        {% if indicators %}
+            <ul style="list-style-type: none; display: flex; flex-direction: column; gap: 0.75rem;">
+                {% for ind in indicators %}
+                <li style="display: flex; align-items: flex-start; gap: 0.5rem; background: var(--bg-dark); padding: 0.75rem; border-radius: 6px;">
+                    <span style="color: var(--warning); font-size: 1.1rem;">✓</span>
+                    <span style="font-size: 0.9rem;">{{ ind }}</span>
+                </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p style="color: var(--text-muted);">No threat indicators flagged for this message (legitimate communication).</p>
+        {% endif %}
+    </div>
+
+    <!-- Recommendations & Score -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">🛡️ Recommended User Response</h3>
+        </div>
+        <div style="margin-bottom: 1.5rem;">
+            <div style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.5rem;">User Awareness Score for <code>{{ current_user.username }}</code>:</div>
+            <div style="font-size: 2.2rem; font-weight: bold; color: var(--primary);">{{ current_user.awareness_score }} / 100</div>
+        </div>
+
+        <h4 style="font-size: 0.95rem; margin-bottom: 0.75rem; color: var(--text-main);">Standard Incident Avoidance Steps:</h4>
+        <ul style="color: var(--text-muted); font-size: 0.875rem; line-height: 1.6; padding-left: 1.25rem;">
+            <li><strong>Inspect Sender Email Address:</strong> Check for subtle domain misspellings or unknown domains.</li>
+            <li><strong>Verify Urgency:</strong> Threat actors use artificial panic (e.g., "Account suspended in 2 hours") to bypass logical scrutiny.</li>
+            <li><strong>Hover Before Clicking:</strong> Always inspect the target URL destination before clicking any link.</li>
+            <li><strong>Never Provide Passwords:</strong> Internal IT will never request your login password via email or unverified forms.</li>
+            <li><strong>Report Suspicious Activity:</strong> Always use the "Report Phishing" button to notify the SOC immediately.</li>
+        </ul>
+    </div>
+</div>
+
+<div style="margin-top: 1rem;">
+    <a href="{{ url_for('inbox', user_id=current_user.id) }}" class="btn btn-primary">&larr; Return to Inbox</a>
+    <a href="{{ url_for('incident_response') }}" class="btn btn-secondary">Go to Incident Response Module &rarr;</a>
+</div>
+{% endblock %}

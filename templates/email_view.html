@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}View Email - PhishAware{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
+    <div>
+        <a href="{{ url_for('inbox', user_id=current_user.id) }}" style="color: var(--primary); text-decoration: none; font-weight: 600;">&larr; Back to Inbox</a>
+        <h2 style="margin-top: 0.5rem;">Email Inspector</h2>
+    </div>
+    <div>
+        <span class="badge badge-info">Active Persona: {{ current_user.username }}</span>
+    </div>
+</div>
+
+<div class="card">
+    <div style="border-bottom: 1px solid var(--border-color); padding-bottom: 1rem; margin-bottom: 1.5rem;">
+        <h3 style="font-size: 1.4rem; margin-bottom: 0.5rem;">{{ email.subject }}</h3>
+        <div style="color: var(--text-muted); font-size: 0.9rem;">
+            <div><strong>From:</strong> <code>{{ email.sender }}</code></div>
+            <div><strong>To:</strong> <code>{{ current_user.email }}</code></div>
+        </div>
+    </div>
+
+    <div style="background-color: var(--bg-dark); padding: 1.5rem; border-radius: 6px; margin-bottom: 2rem; white-space: pre-wrap; font-family: sans-serif; line-height: 1.6;">
+        {{ email.body }}
+    </div>
+
+    {% if email.landing_url %}
+    <div style="background-color: rgba(239, 68, 68, 0.1); border: 1px solid var(--danger); padding: 1rem; border-radius: 6px; margin-bottom: 2rem;">
+        <p style="color: var(--danger); font-weight: 600; margin-bottom: 0.5rem;">🔗 Embedded Call To Action Link Detected:</p>
+        <code style="background-color: var(--bg-dark); padding: 0.3rem 0.6rem; border-radius: 4px; color: var(--text-main);">{{ email.landing_url }}</code>
+    </div>
+    {% endif %}
+
+    <div style="background-color: var(--card-bg); border-top: 2px solid var(--border-color); padding-top: 1.5rem;">
+        <h4 style="margin-bottom: 1rem;">What would you do? Select your decision:</h4>
+        <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+            <form method="POST" action="{{ url_for('user_decision') }}">
+                <input type="hidden" name="user_id" value="{{ current_user.id }}">
+                <input type="hidden" name="email_id" value="{{ email.id }}">
+                <input type="hidden" name="action" value="REPORT_PHISHING">
+                <button type="submit" class="btn btn-warning">🛡️ Report as Phishing</button>
+            </form>
+
+            {% if email.landing_url %}
+            <form method="POST" action="{{ url_for('user_decision') }}">
+                <input type="hidden" name="user_id" value="{{ current_user.id }}">
+                <input type="hidden" name="email_id" value="{{ email.id }}">
+                <input type="hidden" name="action" value="OPEN_LINK">
+                <button type="submit" class="btn btn-danger">🌐 Open Link / Interact</button>
+            </form>
+            {% endif %}
+
+            <form method="POST" action="{{ url_for('user_decision') }}">
+                <input type="hidden" name="user_id" value="{{ current_user.id }}">
+                <input type="hidden" name="email_id" value="{{ email.id }}">
+                <input type="hidden" name="action" value="IGNORE">
+                <button type="submit" class="btn btn-secondary">🙈 Ignore Message</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

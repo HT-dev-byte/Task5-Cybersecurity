@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+
+{% block title %}Incident Response Simulation - PhishAware{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
+    <div>
+        <h2>Simulated Incident Response Module</h2>
+        <p style="color: var(--text-muted);">Interactive lifecycle management for active simulated phishing security incidents.</p>
+    </div>
+    <div>
+        <a href="{{ url_for('incident_timeline') }}" class="btn btn-secondary">⏳ View Incident Timeline</a>
+    </div>
+</div>
+
+<!-- Current Incident Banner -->
+<div class="card" style="border-left: 6px solid var(--primary);">
+    <div class="card-header">
+        <div>
+            <span style="font-size: 1.2rem; font-weight: bold; margin-right: 0.5rem;">{{ incident.incident_number }}</span>
+            <span class="badge badge-warning">{{ incident.severity }} SEVERITY</span>
+        </div>
+        <div>
+            <span class="badge badge-info" style="font-size: 0.9rem; padding: 0.4rem 0.8rem;">
+                Current Lifecycle Phase: {{ incident.status }}
+            </span>
+        </div>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; color: var(--text-muted); font-size: 0.9rem;">
+        <div><strong>Type:</strong> {{ incident.incident_type }}</div>
+        <div><strong>Target Organization:</strong> Northstar Financial Services</div>
+        <div><strong>Last State Update:</strong> <code>{{ incident.updated_at }}</code></div>
+    </div>
+</div>
+
+<!-- Lifecycle Controls -->
+<div class="grid-2">
+    <!-- Phase 1: Detection & Analysis -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">1. Detection & Analysis</h3>
+            <span class="badge badge-success">COMPLETED</span>
+        </div>
+        <p style="color: var(--text-muted); font-size: 0.875rem; margin-bottom: 1rem;">
+            Automated SOC detection triggered by user interaction with suspicious landing page link.
+        </p>
+        <div style="background: var(--bg-dark); padding: 1rem; border-radius: 6px; font-size: 0.85rem; line-height: 1.6;">
+            <div><strong>Affected User(s):</strong> <code>alex.morgan@northstar.example</code></div>
+            <div><strong>Detected Indicator:</strong> Suspicious URL interaction (<code>http://northstar.example/landing-page</code>)</div>
+            <div><strong>Simulated Impact:</strong> High potential risk of credential disclosure in simulated environment.</div>
+        </div>
+    </div>
+
+    <!-- Phase 2: Containment -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">2. Containment Controls</h3>
+            {% if incident.campaign_disabled and incident.url_blocked %}
+                <span class="badge badge-success">CONTAINED</span>
+            {% else %}
+                <span class="badge badge-warning">ACTION REQUIRED</span>
+            {% endif %}
+        </div>
+        <p style="color: var(--text-muted); font-size: 0.875rem; margin-bottom: 1rem;">
+            Simulate defensive firewall rules and campaign suspension to prevent further exposure.
+        </p>
+        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+            <form method="POST" action="{{ url_for('update_incident') }}">
+                <input type="hidden" name="action" value="CONTAIN">
+                <button type="submit" class="btn btn-warning" style="width: 100%;">
+                    {% if incident.campaign_disabled and incident.url_blocked %}
+                        ✅ Containment Active (Re-apply Rules)
+                    {% else %}
+                        🛡️ Execute Containment (Disable Campaign & Block URL)
+                    {% endif %}
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Phase 3: Eradication -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">3. Eradication</h3>
+            {% if incident.artifacts_removed %}
+                <span class="badge badge-success">ERADICATED</span>
+            {% else %}
+                <span class="badge badge-secondary">PENDING</span>
+            {% endif %}
+        </div>
+        <p style="color: var(--text-muted); font-size: 0.875rem; margin-bottom: 1rem;">
+            Purge simulated phishing messages from user inboxes and revoke active sessions.
+        </p>
+        <form method="POST" action="{{ url_for('update_incident') }}">
+            <input type="hidden" name="action" value="ERADICATE">
+            <button type="submit" class="btn btn-primary" style="width: 100%;" {% if not incident.campaign_disabled %}{% endif %}>
+                🧹 Remove Phishing Artifacts & Revoke Sessions
+            </button>
+        </form>
+    </div>
+
+    <!-- Phase 4: Recovery & Lessons Learned -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">4. Recovery & Lessons Learned</h3>
+            {% if incident.status == 'Recovered' or incident.status == 'RECOVERED' %}
+                <span class="badge badge-success">RECOVERED</span>
+            {% else %}
+                <span class="badge badge-secondary">PENDING</span>
+            {% endif %}
+        </div>
+        <p style="color: var(--text-muted); font-size: 0.875rem; margin-bottom: 1rem;">
+            Assign automated security awareness training and restore normal operational baseline.
+        </p>
+        <form method="POST" action="{{ url_for('update_incident') }}">
+            <input type="hidden" name="action" value="RECOVER">
+            <button type="submit" class="btn btn-primary" style="width: 100%;">
+                🔄 Complete Recovery & Assign Targeted Training
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- Lessons Learned Summary -->
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">🎓 Post-Incident Lessons Learned & Recommendations</h3>
+    </div>
+    <div class="grid-2" style="margin-bottom: 0;">
+        <ul style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; padding-left: 1.25rem;">
+            <li><strong>Enhance Gateway Filtering:</strong> Update email security gateway filters to detect domain impersonation patterns.</li>
+            <li><strong>Mandatory MFA:</strong> Enforce Multi-Factor Authentication (MFA) to mitigate impact if credentials are compromised.</li>
+            <li><strong>Targeted Training:</strong> Assign refresher modules for users interacting with simulated phishing links.</li>
+        </ul>
+        <ul style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; padding-left: 1.25rem;">
+            <li><strong>Streamline One-Click Reporting:</strong> Provide an explicit "Report Phishing" button directly inside email clients.</li>
+            <li><strong>Automated Playbooks:</strong> Implement automated SOAR playbooks to block malicious URLs upon report confirmation.</li>
+            <li><strong>Regular Drills:</strong> Conduct monthly simulated drills across all departments.</li>
+        </ul>
+    </div>
+</div>
+{% endblock %}

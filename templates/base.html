@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}PhishAware Simulation{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <aside class="sidebar">
+        <div class="brand">
+            <span>🛡️ PhishAware</span>
+            <span class="brand-badge">SIMULATOR</span>
+        </div>
+        <ul class="nav-list">
+            <li class="nav-item {% if active_page == 'dashboard' %}active{% endif %}">
+                <a href="{{ url_for('dashboard') }}">📊 Dashboard</a>
+            </li>
+            <li class="nav-item {% if active_page == 'inbox' %}active{% endif %}">
+                <a href="{{ url_for('inbox') }}">📥 Simulated Inbox</a>
+            </li>
+            <li class="nav-item {% if active_page == 'events' %}active{% endif %}">
+                <a href="{{ url_for('events') }}">📜 Event Logs</a>
+            </li>
+            <li class="nav-item {% if active_page == 'incident' %}active{% endif %}">
+                <a href="{{ url_for('incident_response') }}">🚨 Incident Response</a>
+            </li>
+            <li class="nav-item {% if active_page == 'timeline' %}active{% endif %}">
+                <a href="{{ url_for('incident_timeline') }}">⏳ Incident Timeline</a>
+            </li>
+            <li class="nav-item {% if active_page == 'findings' %}active{% endif %}">
+                <a href="{{ url_for('findings') }}">🔎 Security Findings</a>
+            </li>
+            <li class="nav-item {% if active_page == 'metrics' %}active{% endif %}">
+                <a href="{{ url_for('metrics') }}">📈 Metrics Dashboard</a>
+            </li>
+            <li class="nav-item {% if active_page == 'architecture' %}active{% endif %}">
+                <a href="{{ url_for('architecture') }}">📐 Architecture Diagram</a>
+            </li>
+        </ul>
+    </aside>
+
+    <main class="main-content">
+        <div class="safety-banner">
+            <div>
+                <span class="safety-tag">EDUCATIONAL ONLY</span>
+                <span style="margin-left: 0.5rem;">This application uses <strong>fictional organizations (Northstar Financial)</strong> and <strong>simulated data only</strong>. No real emails or passwords are ever processed.</span>
+            </div>
+        </div>
+
+        <header class="top-header">
+            <div class="header-title">PhishAware — Security Awareness & Incident Response Simulator</div>
+            <div>
+                <span class="badge badge-info">Target: northstar.example</span>
+            </div>
+        </header>
+
+        <div class="content-body">
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+</body>
+</html>
