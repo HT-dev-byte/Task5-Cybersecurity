@@ -160,44 +160,6 @@ Telemetry logs are recorded for all actions in `security_events`:
 Exports can be ingested into external SIEM tools (ELK Stack, Splunk, QRadar) for simulated security monitoring analysis.
 
 ---
-
-## 8. PDF Report Outline (19 Sections)
-
-The simulation generates data to populate the required capstone PDF report sections:
-1. **Executive Summary**
-2. **Project Objectives**
-3. **Scope and Assumptions**
-4. **Ethical and Safety Considerations**
-5. **Methodology**
-6. **Lab Architecture**
-7. **Network/Architecture Diagram**
-8. **Tools and Technologies**
-9. **Security Awareness Simulation**
-10. **Security Analysis**
-11. **Findings**
-12. **Screenshots and Evidence**
-13. **Mitigation Recommendations**
-14. **Incident Response Simulation**
-15. **Incident Timeline**
-16. **Post-Incident Report**
-17. **Lessons Learned**
-18. **Limitations**
-19. **Conclusion**
-
----
-
-## 9. 12-Minute Capstone Presentation Script
-
-- **Min 0-1:** Introduction & Educational Safety Scope.
-- **Min 1-2:** Architecture & Fictional Scenario (`Northstar Financial`).
-- **Min 2-4:** Live Dashboard & Inbox Personas Demonstration.
-- **Min 4-6:** Phishing Interaction, Safe Landing Page & Awareness Feedback.
-- **Min 6-8:** Security Event Logs & SIEM CSV/JSON Export.
-- **Min 8-10:** Interactive Incident Response Module (Containment -> Eradication -> Recovery).
-- **Min 10-12:** Findings, Strategic Mitigations, and Q&A.
-
----
-
 ## 10. Limitations & Ethical Considerations
 
 - **Educational Boundaries:** The tool strictly avoids real credential transmission or email relay capabilities.
