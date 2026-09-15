@@ -20,7 +20,6 @@
 - [5. Installation & Local Run Guide](#5-installation--local-run-guide)
 - [6. Application Workflow & Demonstration Guide](#6-application-workflow--demonstration-guide)
 - [7. Incident Response & SIEM Integration](#7-incident-response--siem-integration)
-- [8. Limitations & Ethical Considerations](#8-limitations-&-ethical-considerations)
 
 ---
 
@@ -158,7 +157,7 @@ Telemetry logs are recorded for all actions in `security_events`:
 Exports can be ingested into external SIEM tools (ELK Stack, Splunk, QRadar) for simulated security monitoring analysis.
 
 ---
-## 8. Limitations & Ethical Considerations
+## Limitations & Ethical Considerations
 
 - **Educational Boundaries:** The tool strictly avoids real credential transmission or email relay capabilities.
 - **Fictional Data:** All domains (`northstar.example`) and personas are mock entities.
