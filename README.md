@@ -20,9 +20,6 @@
 - [5. Installation & Local Run Guide](#5-installation--local-run-guide)
 - [6. Application Workflow & Demonstration Guide](#6-application-workflow--demonstration-guide)
 - [7. Incident Response & SIEM Integration](#7-incident-response--siem-integration)
-- [8. PDF Report Outline (19 Sections)](#8-pdf-report-outline-19-sections)
-- [9. 12-Minute Capstone Presentation Script](#9-12-minute-capstone-presentation-script)
-- [10. Limitations & Ethical Considerations](#10-limitations--ethical-considerations)
 
 ---
 
